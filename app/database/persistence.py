@@ -23,7 +23,6 @@ def get_user_for_id(id):
 
 
 def update(user: User):
-
     # user_find = session.query(User).filter(User.id == user.id).first()
 
     if not user.id:
@@ -36,3 +35,11 @@ def update(user: User):
     session.commit()
     session.close()
 
+
+def _verify_fields(value):
+    if value == "user":
+        user_vars = []
+        for var in vars(User):
+            if not var.startswith("_"):
+                user_vars.append(var)
+        return user_vars
