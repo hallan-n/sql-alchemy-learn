@@ -23,23 +23,20 @@ def get_user_for_id(id):
 
 
 def update(user: User):
-    # user_find = session.query(User).filter(User.id == user.id).first()
-
-    if not user.id:
-        print("O objeto Pessoa não possui um ID definido.")
-        return
-
-    session.add(user)
-
-    # Faça um commit para salvar as alterações no banco de dados
-    session.commit()
+    if _verify_fields(user):
+        session.merge(user)
+        session.commit()
     session.close()
+    
 
 
-def _verify_fields(value):
-    if value == "user":
-        user_vars = []
-        for var in vars(User):
-            if not var.startswith("_"):
-                user_vars.append(var)
-        return user_vars
+def _verify_fields(value: User):
+    if value.__tablename__ == "user":
+        user_find = session.query(User).filter(User.id == value.id).first()
+        if user_find:
+            print(f"Atualizou com os dados: {value}")
+            return True
+        else:
+            print("O objeto Pessoa não possui um ID definido.")
+            return False
+       
