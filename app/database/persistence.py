@@ -1,5 +1,6 @@
 from app.database.connection import get_session
-from app.models.user import User, Base
+from app.models.user import User
+from app.models.base_model import BaseModel, Base
 from dotenv import load_dotenv
 from copy import copy
 
@@ -22,7 +23,7 @@ def get_user_for_id(id):
     return users
 
 
-def update(user: User):
+def update(user: BaseModel):
     if _verify_fields(user):
         session.merge(user)
         session.commit()
