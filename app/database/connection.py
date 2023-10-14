@@ -1,9 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import os
+
 
 def get_session():
-    # Substitua 'seu_usuario', 'sua_senha', 'seu_host' e 'seu_banco_de_dados' pelos valores apropriados
-    url = 'mysql+mysqlconnector://root:123456@localhost/sql_alchemy'
+    MYSQL_USER = os.getenv("MYSQL_USER")
+    MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
+    MYSQL_HOST = os.getenv("MYSQL_HOST")
+    MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
+
+    url = f"mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}"
     engine = create_engine(url)
     Session = sessionmaker(bind=engine)
     return Session()
